@@ -58,7 +58,7 @@ public class ConfigSecurity {
 		CorsConfiguration corsConfig = new CorsConfiguration();
 
 		corsConfig.addAllowedOrigin("http://localhost:3000");
-		corsConfig.addAllowedOrigin("http://127.0.0.1:54087/pA1");
+		corsConfig.addAllowedOrigin("http://127.0.0.1:54087/**");
 
 		corsConfig.addAllowedHeader("*");
 		corsConfig.addAllowedMethod("*");
