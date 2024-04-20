@@ -59,12 +59,13 @@ public class ConfigSecurity {
 
 		corsConfig.addAllowedOrigin("http://localhost:3000");
 		corsConfig.addAllowedOrigin("http://127.0.0.1:54087");
-
+		corsConfig.addAllowedOrigin("*");
 		corsConfig.addAllowedHeader("*");
 		corsConfig.addAllowedMethod("*");
 		corsConfig.setAllowCredentials(true);
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/v2/api-docs", corsConfig);
 		source.registerCorsConfiguration("/**", corsConfig);
 
 		return new CorsFilter(source);
