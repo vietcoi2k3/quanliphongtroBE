@@ -39,6 +39,7 @@ public class ConfigSecurity {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.csrf(csrf -> csrf.disable())
+				.cors(cors -> cors.disable())
 			.authorizeHttpRequests(auth ->{
 				auth.requestMatchers("/auth/**").permitAll();
 				auth.requestMatchers("/swagger-ui/**").permitAll();
@@ -64,8 +65,8 @@ public class ConfigSecurity {
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 
-		source.registerCorsConfiguration("/v2/api-docs", config);
+		source.registerCorsConfiguration("/v3/api-docs", config);
 		return new CorsFilter(source);
-		
+
 	}
 }
