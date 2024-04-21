@@ -26,6 +26,10 @@ public class AuthController {
 		return ResponseEntity.ok("hello");
 	}
 
+	@RequestMapping(method = RequestMethod.GET,value = "/hello1")
+	public ResponseEntity hello1(){
+		return ResponseEntity.ok("hello");
+	}
 	@RequestMapping(method = RequestMethod.GET,value = "/get-city-outstanding")
 	public ResponseEntity getCityOutstanding(){
 		return ResponseEntity.ok(cityService.getCityOutstanding());
