@@ -4,6 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +17,8 @@ import com.apec.pos.service.JwtService;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -39,8 +43,9 @@ public class ConfigSecurity {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.disable())
-			.authorizeHttpRequests(auth ->{
+				.cors(Customizer.withDefaults())
+
+				.authorizeHttpRequests(auth ->{auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll();
 				auth.requestMatchers("/auth/**").permitAll();
 				auth.requestMatchers("/swagger-ui/**",
 						"/v3/api-docs/**").permitAll();
@@ -56,16 +61,17 @@ public class ConfigSecurity {
 
 	@Bean
 	public CorsFilter corsFilter() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.applyPermitDefaultValues();
+		corsConfig.addAllowedMethod("GET");
+		corsConfig.addAllowedMethod("PATCH");
+		corsConfig.addAllowedMethod("POST");
+		corsConfig.addAllowedMethod("OPTIONS");
+		corsConfig.setAllowedOrigins(Arrays.asList("*"));
+		corsConfig.setAllowedHeaders(Arrays.asList("*"));
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.addAllowedOrigin("http://localhost:3000/");
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-
-		source.registerCorsConfiguration("/**", config);
+		source.registerCorsConfiguration("/**", corsConfig);
 		return new CorsFilter(source);
 
 	}
