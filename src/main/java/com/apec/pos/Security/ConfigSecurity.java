@@ -42,8 +42,8 @@ public class ConfigSecurity {
 				.cors(cors -> cors.disable())
 			.authorizeHttpRequests(auth ->{
 				auth.requestMatchers("/auth/**").permitAll();
-				auth.requestMatchers("/swagger-ui/**").permitAll();
-				auth.requestMatchers("/v3/api-docs/**").permitAll();
+				auth.requestMatchers("/swagger-ui/**",
+						"/v3/api-docs/**").permitAll();
 				auth.requestMatchers("/error").permitAll();
 				auth.anyRequest().authenticated();
 			});
@@ -58,14 +58,14 @@ public class ConfigSecurity {
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-		// Allow anyone and anything access. Probably ok for Swagger spec
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
+		config.addAllowedOrigin("http://localhost:3000/");
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 
-		source.registerCorsConfiguration("/v3/api-docs", config);
+		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 
 	}
