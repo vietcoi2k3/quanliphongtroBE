@@ -1,10 +1,11 @@
 package com.apec.pos.service.serviceInterface;
 
+import com.apec.pos.dto.AccountEntityDTO;
 import com.apec.pos.entity.AccountEntity;
 
 public interface AccountInterface {
 
-	public String login(AccountEntity accountEntity);
+	public String login(AccountEntityDTO accountEntityDTO);
 	
-	public String register(AccountEntity accountEntity);
+	public String register(AccountEntityDTO accountEntityDTO);
 }

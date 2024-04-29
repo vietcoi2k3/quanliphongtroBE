@@ -1,5 +1,7 @@
 package com.apec.pos;
+import com.apec.pos.dto.AccountEntityDTO;
 import com.apec.pos.dto.MotelSearch;
+import com.apec.pos.service.AccountService;
 import com.apec.pos.service.CityService;
 import com.apec.pos.service.MotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +23,14 @@ public class AuthController {
 	@Autowired
 	private MotelService motelService;
 
+	@Autowired
+	private AccountService accountService;
+
 	@RequestMapping(method = RequestMethod.GET,value = "/hello")
 	public ResponseEntity hello(){
 		return ResponseEntity.ok("hello");
 	}
 
-	@RequestMapping(method = RequestMethod.GET,value = "/hello1")
-	public ResponseEntity hello1(){
-		return ResponseEntity.ok("hello");
-	}
 	@RequestMapping(method = RequestMethod.GET,value = "/get-city-outstanding")
 	public ResponseEntity getCityOutstanding(){
 		return ResponseEntity.ok(cityService.getCityOutstanding());
@@ -43,5 +44,15 @@ public class AuthController {
 	@RequestMapping(method =RequestMethod.POST ,value = "paing-motel")
 	public ResponseEntity pagingMotel(@RequestBody MotelSearch motelSearch){
 		return ResponseEntity.ok(motelService.pagingMotel(motelSearch));
+	}
+
+	@RequestMapping(method = RequestMethod.POST,value = "login")
+	public ResponseEntity login(@RequestBody AccountEntityDTO accountEntityDTO){
+		return ResponseEntity.ok(accountService.login(accountEntityDTO));
+	}
+
+	@RequestMapping(method = RequestMethod.POST,value = "register")
+	public ResponseEntity register(@RequestBody AccountEntityDTO accountEntityDTO){
+		return ResponseEntity.ok(accountService.register(accountEntityDTO));
 	}
 }
