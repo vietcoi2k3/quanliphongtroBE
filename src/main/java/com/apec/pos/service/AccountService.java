@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.apec.pos.dto.AccountEntityDTO;
+import com.apec.pos.dto.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,16 +37,22 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	
 
 	@Override
-	public String login(AccountEntityDTO accountEntityDTO) {
+	public JwtResponse login(AccountEntityDTO accountEntityDTO) {
 		AccountEntity aEntity = accountRepository.findByUsername(accountEntityDTO.getUsername());
 		if (passwordEncoder.matches( accountEntityDTO.getPassword(),aEntity.getPassword())) {
-			return jwtService.generateToken(aEntity);
+			JwtResponse jwtResponse = new JwtResponse(
+					jwtService.generateToken(aEntity),
+					aEntity.getId(),
+					aEntity.getUsername(),
+					aEntity.getEmail(),
+					aEntity.getRoles());
+			return jwtResponse;
 		}		
-		return "đăng nhập không thành công";
+		return null;
 	}
 
 	@Override
-	public String register(AccountEntityDTO accountEntityDTO) {
+	public JwtResponse register(AccountEntityDTO accountEntityDTO) {
 		// Kiểm tra xem tài khoản đã tồn tại chưa
 	    if (accountRepository.findByUsername(accountEntityDTO.getUsername()) != null) {
 	        return null;
@@ -66,9 +73,15 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	    accountEntity2.setRoles(roleEntity);
 	    accountEntity2.setUsername(accountEntityDTO.getUsername());
 	    // Lưu tài khoản mới vào cơ sở dữ liệu
-	    accountRepository.insert(accountEntity2);
-	    
-	    return jwtService.generateToken(accountEntity2);
+		accountEntity2= accountRepository.insert(accountEntity2);
+
+		JwtResponse jwtResponse = new JwtResponse(
+				jwtService.generateToken(accountEntity2),
+				accountEntity2.getId(),
+				accountEntity2.getUsername(),
+				accountEntity2.getEmail(),
+				accountEntity2.getRoles());
+	    return jwtResponse;
 	}
 
 }
