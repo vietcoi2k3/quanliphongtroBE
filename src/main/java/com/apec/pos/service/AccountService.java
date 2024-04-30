@@ -1,11 +1,15 @@
 package com.apec.pos.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.apec.pos.dto.AccountEntityDTO;
 import com.apec.pos.dto.JwtResponse;
+import com.apec.pos.dto.UserUpdateDTO;
+import com.apec.pos.until.ConvertToDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,10 +31,12 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private FileUploadService fileUploadService;
 	
 	@Override
 	AccountRepository getRepository() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -84,4 +90,30 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	    return jwtResponse;
 	}
 
+	@Override
+	public AccountEntityDTO getAccount(HttpServletRequest httpServletRequest) {
+	    AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
+		return ConvertToDTO.convertToAccountEntityDTO(accountEntity);
+	}
+
+	@Override
+	public UserUpdateDTO updateAccount(UserUpdateDTO accountEntityDTO, HttpServletRequest httpServletRequest) throws IOException {
+		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
+		accountEntity.builder()
+				.accountName(accountEntityDTO.getAccountName())
+				.email(accountEntityDTO.getEmail())
+				.password(accountEntityDTO.getPassword())
+				.imageUser(fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()))
+				.phoneNumber(accountEntityDTO.getPhoneNumber())
+				.build();
+
+		accountEntity= accountRepository.update(accountEntity);
+		UserUpdateDTO updateDTO = new UserUpdateDTO();
+		updateDTO.setAccountName(accountEntity.getAccountName());
+		updateDTO.setPhoneNumber(accountEntity.getPhoneNumber());
+		updateDTO.setEmail(accountEntity.getEmail());
+		updateDTO.setPassword(accountEntity.getPassword());
+		updateDTO.setImgReturn(accountEntity.getImageUser());
+		return updateDTO;
+	}
 }

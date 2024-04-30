@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 
 @Getter
@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MotelDTO {
+    private long id;
     private String title;
 
     private String description;
@@ -22,9 +23,17 @@ public class MotelDTO {
 
     private Date dateExpried;
 
-    private String motelImage;
+    private MultipartFile motelImage;
+
+    private String imageReturn;
 
     private float acreage;
 
     private String address;
+
+    private long typeMotelID;
+
+    private long cityEntityID;
+
+    private long accountEntityID;
 }

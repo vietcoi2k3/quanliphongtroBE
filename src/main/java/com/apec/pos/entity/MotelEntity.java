@@ -2,13 +2,16 @@ package com.apec.pos.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MotelEntity {
 
     @Id
@@ -55,4 +58,27 @@ public class MotelEntity {
     @JoinColumn(name = "cityEntityID",updatable = false,insertable = false)
     private CityEntity cityEntity;
 
+    public long getAccountEntityID() {
+        return accountEntityID;
+    }
+
+    public void setAccountEntityID(long accountEntityID) {
+        this.accountEntityID = accountEntityID;
+    }
+
+    public long getTypeMotelID() {
+        return typeMotelID;
+    }
+
+    public void setTypeMotelID(long typeMotelID) {
+        this.typeMotelID = typeMotelID;
+    }
+
+    public long getCityEntityID() {
+        return cityEntityID;
+    }
+
+    public void setCityEntityID(long cityEntityID) {
+        this.cityEntityID = cityEntityID;
+    }
 }
