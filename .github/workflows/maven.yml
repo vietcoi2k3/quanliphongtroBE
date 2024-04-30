@@ -27,8 +27,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
 
     - name: ssh
       run: ssh root@14.225.204.101;LIlEML86sJmyUWeE0yoz;cd quanliphongtro;git pull origin master; docker-compose up --build -d
