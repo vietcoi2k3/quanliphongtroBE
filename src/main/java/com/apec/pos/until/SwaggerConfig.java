@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "PROD EVM",
-                        url = "http://14.225.204.101/"
+                        url = "http://14.225.204.101:8080/"
                 )
         }
 )
