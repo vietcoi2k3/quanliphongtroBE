@@ -24,6 +24,7 @@ public class ConvertToDTO {
         return modelMapper.map(accountEntity,AccountEntityDTO.class);
     }
     public static MotelDTO convertToMotelDTO(MotelEntity motelEntity){
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper.map(motelEntity, MotelDTO.class);
     }
 
