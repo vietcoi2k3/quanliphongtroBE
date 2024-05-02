@@ -51,6 +51,8 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 					aEntity.getId(),
 					aEntity.getUsername(),
 					aEntity.getEmail(),
+					aEntity.getPhoneNumber(),
+					aEntity.getAccountName(),
 					aEntity.getRoles());
 			return jwtResponse;
 		}		
@@ -86,6 +88,8 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 				accountEntity2.getId(),
 				accountEntity2.getUsername(),
 				accountEntity2.getEmail(),
+				accountEntity2.getPhoneNumber(),
+				accountEntity2.getAccountName(),
 				accountEntity2.getRoles());
 	    return jwtResponse;
 	}

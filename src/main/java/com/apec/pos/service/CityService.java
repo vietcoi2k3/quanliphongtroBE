@@ -31,8 +31,6 @@ public class CityService implements CityInterface {
         return ConvertToDTO.convertToCityDTO(cityRepository.findAll());
     }
 
-
-
     public List<MotelDTO> getMotelTop(){
         return ConvertToDTO.convertToMotelDTO(motelRepository.getMotelTop());
     }
