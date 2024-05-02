@@ -39,6 +39,10 @@ public class AccountEntity implements UserDetails{
 	@JsonManagedReference(value = "account-motel")
 	private List<MotelEntity> motelEntities;
 
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "accountEntity")
+	@JsonManagedReference(value = "account-his")
+	private List<HistoryPaymentEntity> historyPaymentEntities;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	        name="user_role",

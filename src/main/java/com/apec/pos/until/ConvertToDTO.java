@@ -44,7 +44,9 @@ public class ConvertToDTO {
         List<MotelDTO> result = new ArrayList<>();
         for (MotelEntity x:motelEntities
         ) {
-            result.add(ConvertToDTO.convertToMotelDTO(x));
+            MotelDTO y =ConvertToDTO.convertToMotelDTO(x);
+            y.setImageReturn(x.getMotelImage());
+            result.add(y);
         }
         return result;
     }

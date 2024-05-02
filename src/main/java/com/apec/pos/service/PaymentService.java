@@ -1,9 +1,14 @@
 package com.apec.pos.service;
 
 import com.apec.pos.dto.PaymentDTO;
+import com.apec.pos.entity.AccountEntity;
+import com.apec.pos.entity.HistoryPaymentEntity;
+import com.apec.pos.repository.AccountRepository;
+import com.apec.pos.repository.HistoryPaymentRepository;
 import com.apec.pos.security.VNPAYConfig;
 import com.apec.pos.until.VNPayUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -12,6 +17,15 @@ import java.util.Map;
 public class PaymentService {
 
     private final VNPAYConfig vnPayConfig;
+
+    @Autowired
+    private HistoryPaymentRepository historyPaymentRepository;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     public PaymentService(VNPAYConfig vnPayConfig) {
         this.vnPayConfig = vnPayConfig;
@@ -36,5 +50,14 @@ public class PaymentService {
                 .code("ok")
                 .message("success")
                 .paymentUrl(paymentUrl).build();
+    }
+
+    public HistoryPaymentEntity savePayment(HttpServletRequest httpServletRequest){
+        HistoryPaymentEntity historyPaymentEntity = new HistoryPaymentEntity();
+        AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
+        historyPaymentEntity.setAccountEntityId(accountEntity.getId());
+        historyPaymentEntity.setDescriptions(httpServletRequest.getParameter("vnp_OrderInfo"));
+        historyPaymentEntity.setTotalAmount(Long.parseLong(httpServletRequest.getParameter("vnp_Amount")));
+        return  historyPaymentRepository.insert(historyPaymentEntity);
     }
 }

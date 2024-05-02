@@ -53,7 +53,7 @@ public class MotelEntity {
     @Column(name = "cityEntityID")
     private long cityEntityID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonBackReference(value = "city-motel")
     @JoinColumn(name = "cityEntityID",updatable = false,insertable = false)
     private CityEntity cityEntity;

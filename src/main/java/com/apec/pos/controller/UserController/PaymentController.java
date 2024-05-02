@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user/payment")
+@RequestMapping("/auth/payment")
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;
     @GetMapping("/vn-pay")
     public ResponseEntity pay(HttpServletRequest request) {
         return ResponseEntity.ok(paymentService.createVnPayPayment(request));
+    }
+
+    @GetMapping(value = "/vn-return")
+    public ResponseEntity saveInfo(HttpServletRequest request){
+        return ResponseEntity.ok(paymentService.savePayment(request));
     }
 }
