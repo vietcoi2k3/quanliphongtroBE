@@ -11,8 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateDTO {
-    private String username;
-    private String password;
     private String accountName;
     private String phoneNumber;
     private String email;

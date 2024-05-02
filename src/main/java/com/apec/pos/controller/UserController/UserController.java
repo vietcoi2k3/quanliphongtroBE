@@ -15,6 +15,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping(value = "/user")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin
 public class UserController {
 
     @Autowired

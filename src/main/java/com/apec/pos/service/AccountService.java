@@ -106,7 +106,6 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 		accountEntity.builder()
 				.accountName(accountEntityDTO.getAccountName())
 				.email(accountEntityDTO.getEmail())
-				.password(accountEntityDTO.getPassword())
 				.imageUser(fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()))
 				.phoneNumber(accountEntityDTO.getPhoneNumber())
 				.build();
@@ -116,7 +115,6 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 		updateDTO.setAccountName(accountEntity.getAccountName());
 		updateDTO.setPhoneNumber(accountEntity.getPhoneNumber());
 		updateDTO.setEmail(accountEntity.getEmail());
-		updateDTO.setPassword(accountEntity.getPassword());
 		updateDTO.setImgReturn(accountEntity.getImageUser());
 		return updateDTO;
 	}
