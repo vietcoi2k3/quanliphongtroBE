@@ -31,6 +31,7 @@ public class UserController {
     public ResponseEntity addMotel(@ModelAttribute MotelDTO motelDTO) throws IOException {
         return ResponseEntity.ok(motelService.addMotel(motelDTO));
     }
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT,value = "update-motel",consumes = "multipart/form-data")
     public ResponseEntity updateMotel(@ModelAttribute MotelDTO motelDTO) throws IOException {
         return ResponseEntity.ok(motelService.updateMotel(motelDTO));

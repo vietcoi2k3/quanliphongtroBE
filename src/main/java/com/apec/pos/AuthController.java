@@ -61,6 +61,8 @@ public class AuthController {
 		}
 		return ResponseEntity.ok(jwtResponse);
 	}
+
+
 	@RequestMapping(method = RequestMethod.GET,value = "get-motel-by-id")
 	public ResponseEntity getDetailById(@RequestParam int id){
 		return ResponseEntity.ok(motelService.getMotelById(id));

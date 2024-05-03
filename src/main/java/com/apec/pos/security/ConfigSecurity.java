@@ -66,6 +66,8 @@ public class ConfigSecurity {
 		corsConfig.addAllowedMethod("GET");
 		corsConfig.addAllowedMethod("PATCH");
 		corsConfig.addAllowedMethod("POST");
+		corsConfig.addAllowedMethod("PUT");
+		corsConfig.addAllowedMethod("DELETE");
 		corsConfig.addAllowedMethod("OPTIONS");
 		corsConfig.setAllowedOrigins(Arrays.asList("*"));
 		corsConfig.setAllowedHeaders(Arrays.asList("*"));
