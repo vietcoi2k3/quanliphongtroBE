@@ -28,13 +28,13 @@ public class UserController {
         return ResponseEntity.ok(accountService.getAccount(httpServletRequest));
     }
     @RequestMapping(method = RequestMethod.POST,value = "add-motel",consumes = "multipart/form-data")
-    public ResponseEntity addMotel(@ModelAttribute MotelDTO motelDTO) throws IOException {
-        return ResponseEntity.ok(motelService.addMotel(motelDTO));
+    public ResponseEntity addMotel(@ModelAttribute MotelDTO motelDTO,HttpServletRequest httpServletRequest) throws IOException {
+        return ResponseEntity.ok(motelService.addMotel(motelDTO,httpServletRequest));
     }
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT,value = "update-motel",consumes = "multipart/form-data")
-    public ResponseEntity updateMotel(@ModelAttribute MotelDTO motelDTO) throws IOException {
-        return ResponseEntity.ok(motelService.updateMotel(motelDTO));
+    public ResponseEntity updateMotel(@ModelAttribute MotelDTO motelDTO ,HttpServletRequest httpServletRequest) throws IOException {
+        return ResponseEntity.ok(motelService.updateMotel(motelDTO, httpServletRequest));
     }
     @RequestMapping(method = RequestMethod.DELETE,value = "delete-motel")
     public ResponseEntity deleteMotel(@RequestParam int id) throws IOException {

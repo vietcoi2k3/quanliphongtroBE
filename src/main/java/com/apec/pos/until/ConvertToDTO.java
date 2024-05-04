@@ -25,7 +25,9 @@ public class ConvertToDTO {
     }
     public static MotelDTO convertToMotelDTO(MotelEntity motelEntity){
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper.map(motelEntity, MotelDTO.class);
+        MotelDTO motelDTO =modelMapper.map(motelEntity, MotelDTO.class);
+        motelDTO.setImageReturn(motelEntity.getMotelImage());
+        return motelDTO;
     }
 
     public static CityDTO convertToCityDTO(CityEntity cityEntity){
@@ -45,7 +47,6 @@ public class ConvertToDTO {
         for (MotelEntity x:motelEntities
         ) {
             MotelDTO y =ConvertToDTO.convertToMotelDTO(x);
-            y.setImageReturn(x.getMotelImage());
             result.add(y);
         }
         return result;

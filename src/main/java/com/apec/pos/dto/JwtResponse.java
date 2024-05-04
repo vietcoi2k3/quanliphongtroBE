@@ -20,5 +20,6 @@ public class JwtResponse {
     private  String email;
     private String phoneNumber;
     private String accountName;
+    private String imgReturn;
     private Set<RoleEntity> roles;
 }

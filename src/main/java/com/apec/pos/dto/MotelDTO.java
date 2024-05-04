@@ -34,6 +34,4 @@ public class MotelDTO {
     private long typeMotelID;
 
     private long cityEntityID;
-
-    private long accountEntityID;
 }

@@ -106,7 +106,7 @@ public class AccountEntity implements UserDetails{
 	}
 
 	public void setAccountName(String accountName) {
-		accountName = accountName;
+		this.accountName = accountName;
 	}
 
 	public Set<RoleEntity> getRoles() {
