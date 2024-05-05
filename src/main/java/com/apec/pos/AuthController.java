@@ -67,8 +67,8 @@ public class AuthController {
 		return ResponseEntity.ok(motelService.getMotelById(id));
 	}
 
-	@RequestMapping(value = "reset-password",method = RequestMethod.GET)
-	public ResponseEntity resetPassword(@RequestParam String token){
-
-	}
+//	@RequestMapping(value = "reset-password",method = RequestMethod.GET)
+//	public ResponseEntity resetPassword(@RequestParam String token){
+//
+//	}
 }
