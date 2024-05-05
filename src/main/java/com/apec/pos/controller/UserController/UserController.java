@@ -44,4 +44,17 @@ public class UserController {
     public ResponseEntity updateUser(@ModelAttribute UserUpdateDTO updateDTO,HttpServletRequest httpServletRequest) throws IOException {
         return ResponseEntity.ok(accountService.updateAccount(updateDTO,httpServletRequest));
     }
+
+    @RequestMapping(method = RequestMethod.PUT,value = "change-password")
+    public ResponseEntity changePassword(@RequestBody String oldPassword,@RequestBody String newPassword,HttpServletRequest httpServletRequest){
+        String result = accountService.changePassword(newPassword,oldPassword,httpServletRequest);
+        if (result ==null)
+            return ResponseEntity.badRequest().body("Mật khẩu không khớp");
+        return ResponseEntity.ok(accountService.changePassword(newPassword,oldPassword,httpServletRequest));
+    }
+
+    @RequestMapping(method = RequestMethod.GET,value = "get-list-user-motel")
+    public ResponseEntity getListMotelByUser(@RequestParam int pageIndex,@RequestParam int pageSize,HttpServletRequest httpServletRequest){
+        return ResponseEntity.ok(accountService.getMotelByUser(httpServletRequest,pageIndex,pageSize));
+    }
 }

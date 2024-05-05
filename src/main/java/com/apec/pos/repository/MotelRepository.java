@@ -34,6 +34,13 @@ public class MotelRepository extends BaseRepository<MotelEntity,Integer>{
         return query(queryRaw,false,params,pageRequest);
     }
 
+    public List<MotelEntity> getMotelByUserId(int id,int pageIndex,int pageSize){
+        String queryRaw = "SELECT c FROM MotelEntity c WHERE c.accountEntityID =:id";
+        PageRequest pageRequest = PageRequest.of(pageIndex,pageSize);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id",id);
+        return query(queryRaw,false,params,pageRequest);
+    }
     public long countMotel(MotelSearch motelSearch){
         String queryRaw ="SELECT count(c.id) " +buildQuery(motelSearch);
         Map<String,Object> params = getParams(motelSearch);
