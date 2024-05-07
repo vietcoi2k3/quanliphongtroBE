@@ -31,6 +31,8 @@ public class PaymentService {
         this.vnPayConfig = vnPayConfig;
     }
 
+
+    //tạo giao dịch vnPay
     public PaymentDTO createVnPayPayment(HttpServletRequest request) {
         long amount = Integer.parseInt(request.getParameter("amount")) * 100L;
         String bankCode = request.getParameter("bankCode");
@@ -52,6 +54,7 @@ public class PaymentService {
                 .paymentUrl(paymentUrl).build();
     }
 
+    //lưu thông tin hóa đơn bao gồm giá,và orderInfo
     public HistoryPaymentEntity savePayment(HttpServletRequest httpServletRequest){
         HistoryPaymentEntity historyPaymentEntity = new HistoryPaymentEntity();
         AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));

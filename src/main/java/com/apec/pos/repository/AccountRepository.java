@@ -57,15 +57,12 @@ public class AccountRepository extends BaseRepository<AccountEntity, Integer>{
 	        if (accountEntity.getId() > 0) {
 	            params.put("id", accountEntity.getId());
 	        }
-	        
 	        if (Strings.isNotBlank(accountEntity.getUsername())) {
 	            params.put("username", accountEntity.getUsername());
 	        }
-	        
 	        if (Strings.isNotBlank(accountEntity.getPassword())) {
 	            params.put("password", accountEntity.getPassword());
 	        }
-
 	        return params;
 	 }
 

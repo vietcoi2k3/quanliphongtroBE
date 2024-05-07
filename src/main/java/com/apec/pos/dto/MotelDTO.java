@@ -19,10 +19,6 @@ public class MotelDTO {
 
     private float price;
 
-    private Date dateRelease;
-
-    private Date dateExpried;
-
     private MultipartFile motelImage;
 
     private String imageReturn;

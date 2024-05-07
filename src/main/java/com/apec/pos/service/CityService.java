@@ -26,11 +26,14 @@ public class CityService implements CityInterface {
     @Autowired
     private CityRepository cityRepository;
 
+
+    //lấy ra các thành phố
     @Override
     public List<CityDTO> getCityOutstanding() {
         return ConvertToDTO.convertToCityDTO(cityRepository.findAll());
     }
 
+    //lấy ra 8 nhà trọ ngẫu nhiên
     public List<MotelDTO> getMotelTop(){
         return ConvertToDTO.convertToMotelDTO(motelRepository.getMotelTop());
     }

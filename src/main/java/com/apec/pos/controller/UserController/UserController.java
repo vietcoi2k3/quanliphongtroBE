@@ -1,5 +1,6 @@
 package com.apec.pos.controller.UserController;
 
+import com.apec.pos.dto.ChangePassDTO;
 import com.apec.pos.dto.MotelDTO;
 import com.apec.pos.dto.UserUpdateDTO;
 import com.apec.pos.service.AccountService;
@@ -46,11 +47,11 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT,value = "change-password")
-    public ResponseEntity changePassword(@RequestBody String oldPassword,@RequestBody String newPassword,HttpServletRequest httpServletRequest){
-        String result = accountService.changePassword(newPassword,oldPassword,httpServletRequest);
+    public ResponseEntity changePassword(@RequestBody ChangePassDTO changePassDTO,HttpServletRequest httpServletRequest){
+        String result = accountService.changePassword(changePassDTO.getNewPassword(),changePassDTO.getOldPassword(),httpServletRequest);
         if (result ==null)
             return ResponseEntity.badRequest().body("Mật khẩu không khớp");
-        return ResponseEntity.ok(accountService.changePassword(newPassword,oldPassword,httpServletRequest));
+        return ResponseEntity.ok(result);
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "get-list-user-motel")

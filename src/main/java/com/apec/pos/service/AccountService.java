@@ -16,6 +16,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,9 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	
 	@Autowired
 	private JwtService jwtService;
+
+	@Autowired
+	private JavaMailSender javaMailSender;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -107,6 +112,7 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	    return jwtResponse;
 	}
 
+	//lấy ra thông tin user để hiển thị
 	@Override
 	public AccountEntityDTO getAccount(HttpServletRequest httpServletRequest) {
 	    AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
@@ -115,12 +121,14 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 
 	@Override
 	public UserUpdateDTO updateAccount(UserUpdateDTO accountEntityDTO, HttpServletRequest httpServletRequest) throws IOException {
+		//lấy ra user cần update
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
 		accountEntity.setAccountName(accountEntityDTO.getAccountName());
 		accountEntity.setEmail(accountEntityDTO.getEmail());
 		accountEntity.setImageUser(fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()));
 		accountEntity.setPhoneNumber(accountEntityDTO.getPhoneNumber());
 
+		//update user
 		accountEntity= accountRepository.update(accountEntity);
 		UserUpdateDTO updateDTO = new UserUpdateDTO();
 		updateDTO.setAccountName(accountEntity.getAccountName());
@@ -130,9 +138,11 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 		return updateDTO;
 	}
 
+	//thay đổi password
 	@Override
 	public String changePassword(String newPassword,String oldPassword,HttpServletRequest httpServletRequest) {
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
+		//so sanh pass cũ và mới
 		if (passwordEncoder.matches(oldPassword,accountEntity.getPassword())){
 			accountEntity.setPassword(passwordEncoder.encode(newPassword));
 			accountRepository.update(accountEntity);
@@ -141,13 +151,35 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 		return null;
 	}
 
+	//lấy ra những nhà trọ thuộc user dựa vào token
 	@Override
 	public List<MotelDTO> getMotelByUser(HttpServletRequest httpServletRequest,int pageIndex,int pageSize) {
+		//lấy ra user bằng việc decode token
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
 		List<MotelEntity> motelEntities = motelRepository.getMotelByUserId((int) accountEntity.getId(),pageIndex,pageSize);
 		return ConvertToDTO.convertToMotelDTO(motelEntities);
 	}
 
+
+	//gửi email
+	public String sendEmail(String username){
+		AccountEntity accountEntity = accountRepository.findByUsername(username);
+		String toEmail = accountEntity.getEmail();
+		if (toEmail==null){
+			return null;
+		}
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		simpleMailMessage.setFrom("tlufood.career@gmail.com");
+		simpleMailMessage.setTo(toEmail);
+		simpleMailMessage.setSubject("Xác thực email");
+
+		//tạo token ngẫu nhiên cho việc đổi mật khẩu
+		simpleMailMessage.setText("Bấm vào đây để đổi mk "+"http://14.225.204.101:8080/auth/reset-pass?token="+this.generateToken(accountEntity)+"\n link hết hạn sau 2 phút");
+		javaMailSender.send(simpleMailMessage);
+		return "mời bạn check mail";
+	}
+
+	//tạo password ngẫu nhiên sau khi người dùng bấm đường link gửi về ở email
 	public String resetPassword(String token){
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromToken(token));
 		if (accountEntity!=null && jwtService.validateToken(token,accountEntity)){
@@ -155,20 +187,25 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 			accountEntity.setPassword(passwordEncoder.encode(password));
 			accountRepository.update(accountEntity);
 		}
-		return "đổi mật khẩu thất bại";
+		return null;
 	}
 
+
+	//hàm tạo token ngẫu nhiên
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
+
+	//hàm set các thuộc tính của token
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000*2))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
 	}
 
+	//hàm tạo password ngẫu nhiên
 	public  String generatePassword() {
 		StringBuilder password = new StringBuilder();
 		SecureRandom random = new SecureRandom();

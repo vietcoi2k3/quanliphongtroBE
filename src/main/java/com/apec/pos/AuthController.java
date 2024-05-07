@@ -67,8 +67,20 @@ public class AuthController {
 		return ResponseEntity.ok(motelService.getMotelById(id));
 	}
 
-//	@RequestMapping(value = "reset-password",method = RequestMethod.GET)
-//	public ResponseEntity resetPassword(@RequestParam String token){
-//
-//	}
+	@RequestMapping(method = RequestMethod.GET,value = "forgot-email")
+	public ResponseEntity forgotPassword(@RequestParam String username){
+		String result = accountService.sendEmail(username);
+		if (result==null){
+			return ResponseEntity.badRequest().body("tài khoản chưa xác thực email");
+		}
+		return ResponseEntity.ok(result);
+	}
+	@RequestMapping(value = "reset-password",method = RequestMethod.GET)
+	public ResponseEntity resetPassword(@RequestParam String token){
+		String result = accountService.resetPassword(token);
+		if (result ==null){
+			return ResponseEntity.badRequest().body("Đổi mật khẩu không thành công");
+		}
+		return ResponseEntity.ok(accountService.resetPassword(token));
+	}
 }

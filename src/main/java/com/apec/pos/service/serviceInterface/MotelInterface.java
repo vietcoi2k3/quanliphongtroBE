@@ -2,6 +2,7 @@ package com.apec.pos.service.serviceInterface;
 
 import com.apec.pos.dto.ListMotelDTO;
 import com.apec.pos.dto.MotelDTO;
+import com.apec.pos.dto.MotelDetailDTO;
 import com.apec.pos.dto.MotelSearch;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -11,7 +12,7 @@ public interface MotelInterface {
 
     public ListMotelDTO pagingMotel(MotelSearch motelSearch);
 
-    public MotelDTO getMotelById(int id);
+    public MotelDetailDTO getMotelById(int id);
 
     public MotelDTO addMotel(MotelDTO motelDTO, HttpServletRequest httpServletRequest) throws IOException;
 

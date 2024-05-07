@@ -27,6 +27,7 @@ public class MotelRepository extends BaseRepository<MotelEntity,Integer>{
         return query.setMaxResults(8).getResultList();
     }
 
+    //phân trang
     public List<MotelEntity> pagingMotel(MotelSearch motelSearch){
         String queryRaw = buildQuery(motelSearch);
         PageRequest pageRequest = PageRequest.of(motelSearch.getPageIndex(), motelSearch.getPageSize());
@@ -34,6 +35,7 @@ public class MotelRepository extends BaseRepository<MotelEntity,Integer>{
         return query(queryRaw,false,params,pageRequest);
     }
 
+    //lấy ra danh sách nhà trọ dựa trên userId
     public List<MotelEntity> getMotelByUserId(int id,int pageIndex,int pageSize){
         String queryRaw = "SELECT c FROM MotelEntity c WHERE c.accountEntityID =:id";
         PageRequest pageRequest = PageRequest.of(pageIndex,pageSize);
@@ -41,12 +43,15 @@ public class MotelRepository extends BaseRepository<MotelEntity,Integer>{
         params.put("id",id);
         return query(queryRaw,false,params,pageRequest);
     }
+
+    //đếm tổng số lượng nhà trọ dựa trên các tham số
     public long countMotel(MotelSearch motelSearch){
         String queryRaw ="SELECT count(c.id) " +buildQuery(motelSearch);
         Map<String,Object> params = getParams(motelSearch);
         return count(queryRaw,false,params);
     }
 
+    //tạo ra câu lệnh query dựa trên các tham số
     private String buildQuery(MotelSearch motelSearch) {
         String query = "FROM MotelEntity c WHERE 1=1 ";
         if (motelSearch.getTypeMotelId() > 0) {
@@ -70,6 +75,7 @@ public class MotelRepository extends BaseRepository<MotelEntity,Integer>{
         return query;
     }
 
+    //tạo ra cái cặp param
     public Map<String, Object> getParams(MotelSearch motelSearch) {
 	        Map<String, Object> params = new HashMap<>();
             if (motelSearch.getTypeMotelId()>0){

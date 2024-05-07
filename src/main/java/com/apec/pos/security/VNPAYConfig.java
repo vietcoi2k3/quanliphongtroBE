@@ -30,6 +30,7 @@ public class VNPAYConfig {
     @Value("${payment.vnPay.orderType}")
     private String orderType;
 
+    //câu hình thành toán qua công VNpay
     public Map<String, String> getVNPayConfig() {
         Map<String, String> vnpParamsMap = new HashMap<>();
         vnpParamsMap.put("vnp_Version", this.vnp_Version);
