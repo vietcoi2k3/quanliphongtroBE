@@ -11,7 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Map;
+import java.util.TimeZone;
 
 @Service
 public class PaymentService {
@@ -39,9 +42,20 @@ public class PaymentService {
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         if (bankCode != null && !bankCode.isEmpty()) {
-            vnpParamsMap.put("vnp_BankCode", bankCode);
+            vnpParamsMap.put("vnp_BankCode", "NCB");
         }
-        vnpParamsMap.put("vnp_IpAddr", "localhost");
+        vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+
+        vnpParamsMap.put("vnp_CreateDate", vnp_CreateDate);
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        //Add Params of 2.1.0 Version
+        vnpParamsMap.put("vnp_ExpireDate", vnp_ExpireDate);
         //build query url
         String queryUrl = VNPayUtil.getPaymentURL(vnpParamsMap, true);
         String hashData = VNPayUtil.getPaymentURL(vnpParamsMap, false);
