@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
     private final PaymentService paymentService;
     @GetMapping("/vn-pay")
+// Phương thức này xử lý yêu cầu thanh toán từ VNPay và trả về một phản hồi HTTP.
     public ResponseEntity pay(HttpServletRequest request) {
         return ResponseEntity.ok(paymentService.createVnPayPayment(request));
     }
 
     @GetMapping(value = "/vn-return")
+// Phương thức này xử lý việc lưu thông tin thanh toán từ VNPay và trả về một phản hồi HTTP.
     public ResponseEntity saveInfo(HttpServletRequest request){
         return ResponseEntity.ok(paymentService.savePayment(request));
     }
+
 }
