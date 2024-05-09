@@ -22,4 +22,5 @@ public class JwtResponse {
     private String accountName;
     private String imgReturn;
     private Set<RoleEntity> roles;
+    private long money;
 }

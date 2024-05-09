@@ -35,6 +35,8 @@ public class AccountEntity implements UserDetails{
 
 	private String email;
 
+	private long money;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "accountEntity")
 	@JsonManagedReference(value = "account-motel")
 	private List<MotelEntity> motelEntities;

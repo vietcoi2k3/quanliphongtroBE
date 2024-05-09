@@ -16,4 +16,5 @@ public class AccountEntityDTO {
     private String accountName;
     private String phoneNumber;
     private String email;
+    private long money;
 }
