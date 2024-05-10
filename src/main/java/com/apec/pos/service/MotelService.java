@@ -79,7 +79,9 @@ public class MotelService implements MotelInterface{
         MotelEntity motelEntity = ConvertToDTO.convertToMotelEntity(motelDTO);
         motelEntity.setDateRelease(new Date());
         motelEntity.setAccountEntityID(accountEntity.getId());
-        motelEntity.setMotelImage(fileUploadService.uploadFile(motelEntity.getMotelImage().getBytes()));
+        if (motelDTO.getMotelImage()!=null){
+            motelEntity.setMotelImage(fileUploadService.uploadFile(motelEntity.getMotelImage().getBytes()));
+        }
         motelEntity = motelRepository.insert(motelEntity);
         MotelDTO motelDTO1 = ConvertToDTO.convertToMotelDTO(motelEntity);
         motelDTO1.setImageReturn(motelEntity.getMotelImage());
