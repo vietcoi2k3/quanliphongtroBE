@@ -126,10 +126,13 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	@Override
 	public UserUpdateDTO updateAccount(UserUpdateDTO accountEntityDTO, HttpServletRequest httpServletRequest) throws IOException {
 		//lấy ra user cần update
+		if (accountEntityDTO.getImg()==null){
+			System.out.println("tôi là việt");
+		}
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
 		accountEntity.setAccountName(accountEntityDTO.getAccountName());
 		accountEntity.setEmail(accountEntityDTO.getEmail());
-			accountEntity.setImageUser(accountEntityDTO.getImg()!=null?fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()):accountEntity.getImageUser());
+		accountEntity.setImageUser(accountEntityDTO.getImg()!=null?fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()):accountEntity.getImageUser());
 
 		accountEntity.setPhoneNumber(accountEntityDTO.getPhoneNumber());
 
