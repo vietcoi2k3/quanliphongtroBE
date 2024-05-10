@@ -62,6 +62,7 @@ public class MotelService implements MotelInterface{
                 .acreage(motelEntity.getAcreage())
                 .address(motelEntity.getAddress())
                 .title(motelEntity.getTitle())
+                .typeMotel(motelEntity.getTypeMotelEntity().getNameType())
                 .dateRelease(motelEntity.getDateRelease())
                 .dateExpried(motelEntity.getDateExpried())
                 .price(motelEntity.getPrice())

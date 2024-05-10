@@ -83,4 +83,5 @@ public class AuthController {
 		}
 		return ResponseEntity.ok(accountService.resetPassword(token));
 	}
+
 }
