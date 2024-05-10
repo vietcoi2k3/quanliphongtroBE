@@ -97,7 +97,7 @@ public class MotelService implements MotelInterface{
         MotelEntity motelEntity = motelRepository.findOne((int) motelDTO.getId());
         motelEntity = MotelEntity.builder()
                 .accountEntityID(accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest)).getId())
-                .motelImage(fileUploadService.uploadFile(motelEntity.getMotelImage().getBytes()))
+                .motelImage(motelEntity.getMotelImage()!=null?fileUploadService.uploadFile(motelEntity.getMotelImage().getBytes()):motelEntity.getMotelImage())
                 .address(motelDTO.getAddress())
                 .acreage(motelDTO.getAcreage())
                 .cityEntityID(motelDTO.getCityEntityID())

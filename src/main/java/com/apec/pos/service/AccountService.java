@@ -129,9 +129,7 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
 		accountEntity.setAccountName(accountEntityDTO.getAccountName());
 		accountEntity.setEmail(accountEntityDTO.getEmail());
-		if (accountEntityDTO.getImg().getBytes()!=null){
-			accountEntity.setImageUser(fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()));
-		}
+			accountEntity.setImageUser(accountEntityDTO.getImg()!=null?fileUploadService.uploadFile(accountEntityDTO.getImg().getBytes()):accountEntity.getImageUser());
 
 		accountEntity.setPhoneNumber(accountEntityDTO.getPhoneNumber());
 
