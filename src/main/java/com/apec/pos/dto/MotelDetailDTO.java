@@ -26,6 +26,8 @@ public class MotelDetailDTO {
 
     private float acreage;
 
+    private long cityId;
+
     private String typeMotel;
     private String address;
     private String accountName;

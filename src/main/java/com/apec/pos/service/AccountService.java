@@ -126,9 +126,7 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	@Override
 	public UserUpdateDTO updateAccount(UserUpdateDTO accountEntityDTO, HttpServletRequest httpServletRequest) throws IOException {
 		//lấy ra user cần update
-		if (accountEntityDTO.getImg()==null){
-			System.out.println("tôi là việt");
-		}
+
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
 		accountEntity.setAccountName(accountEntityDTO.getAccountName());
 		accountEntity.setEmail(accountEntityDTO.getEmail());
@@ -182,18 +180,21 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 		simpleMailMessage.setSubject("Xác thực email");
 
 		//tạo token ngẫu nhiên cho việc đổi mật khẩu
-		simpleMailMessage.setText("Bấm vào đây để đổi mk "+"http://14.225.204.101:8080/auth/reset-pass?token="+this.generateToken(accountEntity)+"\n link hết hạn sau 2 phút");
+		simpleMailMessage.setText("Bấm vào đây để đổi mk "+"http://localhost:8080/auth/reset-password?token="+this.generateToken(accountEntity)+"\n link hết hạn sau 2 phút");
 		javaMailSender.send(simpleMailMessage);
 		return "mời bạn check mail";
 	}
 
 	//tạo password ngẫu nhiên sau khi người dùng bấm đường link gửi về ở email
 	public String resetPassword(String token){
+		System.out.println("token: "+token);
+		System.out.println(jwtService.getUsernameFromToken(token));
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromToken(token));
 		if (accountEntity!=null && jwtService.validateToken(token,accountEntity)){
 			String password = this.generatePassword();
 			accountEntity.setPassword(passwordEncoder.encode(password));
 			accountRepository.update(accountEntity);
+			return "Mật khẩu mới của bạn là: "+password;
 		}
 		return null;
 	}

@@ -66,6 +66,7 @@ public class MotelService implements MotelInterface{
                 .dateRelease(motelEntity.getDateRelease())
                 .dateExpried(motelEntity.getDateExpried())
                 .price(motelEntity.getPrice())
+                .cityId(motelEntity.getCityEntityID())
                 .description(motelEntity.getDescription())
                 .build();
         return motelDetailDTO;

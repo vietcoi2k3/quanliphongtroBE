@@ -77,6 +77,7 @@ public class AuthController {
 	}
 	@RequestMapping(value = "reset-password",method = RequestMethod.GET)
 	public ResponseEntity resetPassword(@RequestParam String token){
+		System.out.println();
 		String result = accountService.resetPassword(token);
 		if (result ==null){
 			return ResponseEntity.badRequest().body("Đổi mật khẩu không thành công");
