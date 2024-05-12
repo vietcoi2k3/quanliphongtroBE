@@ -22,6 +22,6 @@ public interface AccountInterface {
 
 	public String changePassword(String newPassword,String oldPassword,HttpServletRequest httpServletRequest);
 
-	public List<MotelDTO> getMotelByUser(HttpServletRequest httpServletRequest, int pageIndex, int pageSize);
+	public List<MotelDTO> getMotelByUser(HttpServletRequest httpServletRequest);
 
 }

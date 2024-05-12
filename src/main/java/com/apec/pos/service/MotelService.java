@@ -83,9 +83,7 @@ public class MotelService implements MotelInterface{
         MotelEntity motelEntity = ConvertToDTO.convertToMotelEntity(motelDTO);
         motelEntity.setDateRelease(new Date());
         motelEntity.setAccountEntityID(accountEntity.getId());
-        if (motelDTO.getMotelImage()!=null){
-            motelEntity.setMotelImage(fileUploadService.uploadFile(motelEntity.getMotelImage().getBytes()));
-        }
+        motelEntity.setMotelImage(fileUploadService.uploadFile(motelDTO.getMotelImage().getBytes()));
         motelEntity = motelRepository.insert(motelEntity);
         MotelDTO motelDTO1 = ConvertToDTO.convertToMotelDTO(motelEntity);
         motelDTO1.setImageReturn(motelEntity.getMotelImage());
@@ -98,21 +96,22 @@ public class MotelService implements MotelInterface{
     public MotelDTO updateMotel(MotelDTO motelDTO ,HttpServletRequest httpServletRequest) throws IOException {
         Date dateEx = new Date();
         dateEx.setMonth(dateEx.getMonth()+1);
+        AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
         MotelEntity motelEntity = motelRepository.findOne((int) motelDTO.getId());
-        motelEntity = MotelEntity.builder()
-                .accountEntityID(accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest)).getId())
-                .motelImage(motelEntity.getMotelImage()!=null?fileUploadService.uploadFile(motelEntity.getMotelImage().getBytes()):motelEntity.getMotelImage())
-                .address(motelDTO.getAddress())
-                .acreage(motelDTO.getAcreage())
-                .cityEntityID(motelDTO.getCityEntityID())
-                .price(motelDTO.getPrice())
-                .dateExpried(dateEx)
-                .dateRelease(new Date())
-                .typeMotelID(motelDTO.getTypeMotelID())
-                .description(motelDTO.getDescription())
-                .title(motelDTO.getTitle())
-                .build();
+
+        motelEntity.setAccountEntityID(accountEntity.getId());
+        motelEntity.setAddress(motelDTO.getAddress());
+        motelEntity.setAcreage(motelDTO.getAcreage());
+        motelEntity.setCityEntityID(motelDTO.getCityEntityID());
+        motelEntity.setPrice(motelDTO.getPrice());
+        motelEntity.setDateExpried(dateEx);
+        motelEntity.setDateRelease(new Date());
+        motelEntity.setMotelImage(motelDTO.getMotelImage()!=null?fileUploadService.uploadFile(motelDTO.getMotelImage().getBytes()):motelEntity.getMotelImage());
+        motelEntity.setTypeMotelID(motelDTO.getTypeMotelID());
+        motelEntity.setDescription(motelDTO.getDescription());
+        motelEntity.setTitle(motelDTO.getTitle());
         motelEntity = motelRepository.update(motelEntity);
+
         MotelDTO motelDTO1 = ConvertToDTO.convertToMotelDTO(motelEntity);
         motelDTO1.setImageReturn(motelEntity.getMotelImage());
         return motelDTO1;

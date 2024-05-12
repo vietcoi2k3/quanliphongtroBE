@@ -120,7 +120,9 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 	@Override
 	public AccountEntityDTO getAccount(HttpServletRequest httpServletRequest) {
 	    AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
-		return ConvertToDTO.convertToAccountEntityDTO(accountEntity);
+		AccountEntityDTO accountEntityDTO =ConvertToDTO.convertToAccountEntityDTO(accountEntity);
+		accountEntityDTO.setImgReturn(accountEntity.getImageUser());
+		return accountEntityDTO;
 	}
 
 	@Override
@@ -159,10 +161,10 @@ public class AccountService extends BaseService<AccountRepository, AccountEntity
 
 	//lấy ra những nhà trọ thuộc user dựa vào token
 	@Override
-	public List<MotelDTO> getMotelByUser(HttpServletRequest httpServletRequest,int pageIndex,int pageSize) {
+	public List<MotelDTO> getMotelByUser(HttpServletRequest httpServletRequest) {
 		//lấy ra user bằng việc decode token
 		AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
-		List<MotelEntity> motelEntities = motelRepository.getMotelByUserId((int) accountEntity.getId(),pageIndex,pageSize);
+		List<MotelEntity> motelEntities = motelRepository.getMotelByUserId((int) accountEntity.getId());
 		return ConvertToDTO.convertToMotelDTO(motelEntities);
 	}
 

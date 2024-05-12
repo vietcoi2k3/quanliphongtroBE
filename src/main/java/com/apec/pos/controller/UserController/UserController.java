@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "get-list-user-motel")
-    public ResponseEntity getListMotelByUser(@RequestParam int pageIndex,@RequestParam int pageSize,HttpServletRequest httpServletRequest){
-        return ResponseEntity.ok(accountService.getMotelByUser(httpServletRequest,pageIndex,pageSize));
+    public ResponseEntity getListMotelByUser(HttpServletRequest httpServletRequest){
+        return ResponseEntity.ok(accountService.getMotelByUser(httpServletRequest));
     }
 }

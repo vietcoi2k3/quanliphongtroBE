@@ -36,12 +36,11 @@ public class MotelRepository extends BaseRepository<MotelEntity,Integer>{
     }
 
     //lấy ra danh sách nhà trọ dựa trên userId
-    public List<MotelEntity> getMotelByUserId(int id,int pageIndex,int pageSize){
+    public List<MotelEntity> getMotelByUserId(int id){
         String queryRaw = "SELECT c FROM MotelEntity c WHERE c.accountEntityID =:id";
-        PageRequest pageRequest = PageRequest.of(pageIndex,pageSize);
         Map<String, Object> params = new HashMap<>();
         params.put("id",id);
-        return query(queryRaw,false,params,pageRequest);
+        return query(queryRaw,false,params);
     }
 
     //đếm tổng số lượng nhà trọ dựa trên các tham số
