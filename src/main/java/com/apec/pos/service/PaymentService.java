@@ -77,7 +77,7 @@ public class PaymentService {
         AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
 
         // Cập nhật số tiền trong tài khoản của người dùng sau khi thanh toán
-        accountEntity.setMoney(accountEntity.getMoney() + Long.parseLong(httpServletRequest.getParameter("vnp_Amount")));
+        accountEntity.setMoney(accountEntity.getMoney() + Long.parseLong(httpServletRequest.getParameter("vnp_Amount"))/100);
 
         // Đặt ID của tài khoản cho đối tượng lịch sử thanh toán
         historyPaymentEntity.setAccountEntityId(accountEntity.getId());
