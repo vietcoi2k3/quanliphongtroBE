@@ -62,7 +62,7 @@ public class MotelService implements MotelInterface{
                 .acreage(motelEntity.getAcreage())
                 .address(motelEntity.getAddress())
                 .title(motelEntity.getTitle())
-                .typeMotel(motelEntity.getTypeMotelEntity().getNameType())
+                .typeMotel((int) motelEntity.getTypeMotelEntity().getId())
                 .dateRelease(motelEntity.getDateRelease())
                 .dateExpried(motelEntity.getDateExpried())
                 .price(motelEntity.getPrice())
@@ -75,8 +75,11 @@ public class MotelService implements MotelInterface{
     //thêm motel
     @Override
     public MotelDTO addMotel(MotelDTO motelDTO, HttpServletRequest httpServletRequest) throws IOException {
-
         AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
+        if (accountEntity.getMoney()<15000){
+            return null;
+        }
+        accountEntity.setMoney(accountEntity.getMoney()-15000);
         MotelEntity motelEntity = ConvertToDTO.convertToMotelEntity(motelDTO);
         motelEntity.setDateRelease(new Date());
         motelEntity.setAccountEntityID(accountEntity.getId());

@@ -28,7 +28,7 @@ public class MotelDetailDTO {
 
     private long cityId;
 
-    private String typeMotel;
+    private int typeMotel;
     private String address;
     private String accountName;
     private String phoneNumber;

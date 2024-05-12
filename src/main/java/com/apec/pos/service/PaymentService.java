@@ -69,12 +69,27 @@ public class PaymentService {
     }
 
     //lưu thông tin hóa đơn bao gồm giá,và orderInfo
-    public HistoryPaymentEntity savePayment(HttpServletRequest httpServletRequest){
+    public HistoryPaymentEntity savePayment(HttpServletRequest httpServletRequest) {
+        // Tạo một đối tượng HistoryPaymentEntity mới để lưu thông tin thanh toán
         HistoryPaymentEntity historyPaymentEntity = new HistoryPaymentEntity();
+
+        // Tìm tài khoản của người dùng dựa trên thông tin được trích xuất từ JWT trong request
         AccountEntity accountEntity = accountRepository.findByUsername(jwtService.getUsernameFromRequest(httpServletRequest));
+
+        // Cập nhật số tiền trong tài khoản của người dùng sau khi thanh toán
+        accountEntity.setMoney(accountEntity.getMoney() + Long.parseLong(httpServletRequest.getParameter("vnp_Amount")));
+
+        // Đặt ID của tài khoản cho đối tượng lịch sử thanh toán
         historyPaymentEntity.setAccountEntityId(accountEntity.getId());
+
+        // Đặt mô tả của thanh toán từ thông tin trích xuất từ request
         historyPaymentEntity.setDescriptions(httpServletRequest.getParameter("vnp_OrderInfo"));
+
+        // Đặt tổng số tiền thanh toán từ thông tin trích xuất từ request
         historyPaymentEntity.setTotalAmount(Long.parseLong(httpServletRequest.getParameter("vnp_Amount")));
-        return  historyPaymentRepository.insert(historyPaymentEntity);
+
+        // Lưu thông tin thanh toán vào cơ sở dữ liệu và trả về đối tượng đã lưu
+        return historyPaymentRepository.insert(historyPaymentEntity);
     }
+
 }
